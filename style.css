@@ -1,7 +1,26 @@
 /* =========================================
    OdynsEye WebLab
-   Visual System v1
+   Visual System v2 — "Iris & Instrument"
    ========================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500&display=swap');
+
+:root {
+    --ink: #10131c;
+    --ink-soft: #171c29;
+    --paper: #f2f4f7;
+    --card: #ffffff;
+    --line: #e2e7ed;
+    --text-muted: #4b5768;
+    --text-faint: #7a8798;
+    --accent: #e3a43b;
+    --accent-dim: rgba(227, 164, 59, 0.35);
+    --scan: #6fd8c9;
+
+    --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+    --font-mono: "Space Grotesk", "IBM Plex Mono", monospace;
+    --font-body: "Inter", -apple-system, "Segoe UI", sans-serif;
+}
 
 * {
     box-sizing: border-box;
@@ -13,9 +32,9 @@ html {
 
 body {
     margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: var(--font-body);
     line-height: 1.6;
-    background: #f4f6f8;
+    background: var(--paper);
     color: #172033;
 }
 
@@ -35,9 +54,11 @@ body {
 }
 
 .logo {
-    font-size: 1.15rem;
+    font-family: var(--font-mono);
+    font-size: 1.05rem;
     font-weight: 700;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
+    color: white;
 }
 
 .nav-links {
@@ -46,14 +67,43 @@ body {
 }
 
 .nav-links a {
+    position: relative;
+
     color: white;
     text-decoration: none;
+    font-family: var(--font-mono);
     font-size: 0.9rem;
+    font-weight: 500;
     opacity: 0.85;
+}
+
+.nav-links a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+
+    width: 100%;
+    height: 1px;
+
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
 }
 
 .nav-links a:hover {
     opacity: 1;
+}
+
+.nav-links a:hover::after {
+    transform: scaleX(1);
+}
+
+.nav-links a:focus-visible,
+.button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
 }
 
 
@@ -62,12 +112,44 @@ body {
    ========================================= */
 
 .hero {
+    position: relative;
+    overflow: hidden;
+
     min-height: 620px;
-    background: #101827;
+    background: var(--ink);
     color: white;
 }
 
+.hero::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    width: 900px;
+    height: 900px;
+
+    background: radial-gradient(circle, var(--accent-dim) 0%, rgba(227, 164, 59, 0) 65%);
+    transform: translate(-50%, -50%);
+
+    animation: iris-breathe 7s ease-in-out infinite;
+}
+
+@keyframes iris-breathe {
+    0%, 100% {
+        opacity: 0.55;
+        transform: translate(-50%, -50%) scale(0.9);
+    }
+    50% {
+        opacity: 0.9;
+        transform: translate(-50%, -50%) scale(1.05);
+    }
+}
+
 .hero-content {
+    position: relative;
+    z-index: 1;
+
     max-width: 850px;
     margin: 0 auto;
     padding: 110px 30px 140px;
@@ -77,18 +159,29 @@ body {
 .eyebrow {
     margin: 0 0 20px;
 
+    font-family: var(--font-mono);
     font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.18em;
-    opacity: 0.65;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    opacity: 0;
+    color: var(--accent);
+
+    animation: rise-in 0.7s ease forwards;
+    animation-delay: 0.05s;
 }
 
 .hero h1 {
     margin: 0;
 
+    font-family: var(--font-display);
+    font-weight: 500;
     font-size: clamp(4rem, 10vw, 7rem);
     line-height: 0.95;
-    letter-spacing: -0.05em;
+    letter-spacing: -0.03em;
+    opacity: 0;
+
+    animation: rise-in 0.8s ease forwards;
+    animation-delay: 0.18s;
 }
 
 .hero h2 {
@@ -96,8 +189,15 @@ body {
 
     max-width: 760px;
 
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-style: italic;
     font-size: clamp(1.5rem, 3vw, 2.3rem);
-    line-height: 1.2;
+    line-height: 1.25;
+    opacity: 0;
+
+    animation: rise-in 0.8s ease forwards;
+    animation-delay: 0.34s;
 }
 
 .hero-text {
@@ -105,10 +205,27 @@ body {
     margin: 28px auto 35px;
 
     font-size: 1.1rem;
-    opacity: 0.78;
+    opacity: 0;
+    color: rgba(255, 255, 255, 0.78);
+
+    animation: rise-in 0.8s ease forwards;
+    animation-delay: 0.5s;
+}
+
+@keyframes rise-in {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .button {
+    position: relative;
+    overflow: hidden;
     display: inline-block;
 
     padding: 13px 24px;
@@ -118,15 +235,40 @@ body {
 
     color: white;
     text-decoration: none;
-
+    font-family: var(--font-mono);
     font-weight: 600;
 
-    transition: all 0.2s ease;
+    opacity: 0;
+
+    animation: rise-in 0.8s ease forwards;
+    animation-delay: 0.64s;
+
+    transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+
+.button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -60%;
+
+    width: 40%;
+    height: 100%;
+
+    background: rgba(255, 255, 255, 0.5);
+    transform: skewX(-20deg);
+
+    transition: left 0.5s ease;
 }
 
 .button:hover {
     background: white;
-    color: #101827;
+    color: var(--ink);
+    border-color: white;
+}
+
+.button:hover::before {
+    left: 130%;
 }
 
 
@@ -145,9 +287,9 @@ main {
 
     padding: 55px;
 
-    background: white;
+    background: var(--card);
 
-    border: 1px solid #e4e8ed;
+    border: 1px solid var(--line);
     border-radius: 14px;
 
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
@@ -156,26 +298,29 @@ main {
 .section-label {
     margin: 0 0 18px;
 
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.16em;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
 
-    color: #637083;
+    color: var(--text-faint);
 }
 
 .section h2 {
     margin: 0 0 25px;
 
+    font-family: var(--font-display);
+    font-weight: 500;
     font-size: clamp(2rem, 4vw, 3rem);
     line-height: 1.1;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.02em;
 }
 
 .section p {
     max-width: 780px;
 
     font-size: 1.05rem;
-    color: #465366;
+    color: var(--text-muted);
 }
 
 
@@ -193,22 +338,45 @@ main {
 
 .card {
     position: relative;
+    overflow: hidden;
 
     padding: 30px;
 
-    border: 1px solid #e2e7ed;
+    border: 1px solid var(--line);
     border-radius: 10px;
 
     background: #fafbfc;
 
     transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 3px;
+
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+
+    transition: transform 0.3s ease;
 }
 
 .card:hover {
     transform: translateY(-4px);
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+    border-color: rgba(227, 164, 59, 0.4);
+}
+
+.card:hover::before {
+    transform: scaleX(1);
 }
 
 .card-number {
@@ -216,17 +384,21 @@ main {
 
     margin-bottom: 20px;
 
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    font-variant-numeric: tabular-nums;
 
-    color: #7a8798;
+    color: var(--text-faint);
 }
 
 .card h3 {
     margin: 0 0 15px;
 
-    font-size: 1.35rem;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.4rem;
 }
 
 .card p {
@@ -234,16 +406,41 @@ main {
 
     font-size: 0.95rem;
     line-height: 1.65;
+    color: var(--text-muted);
 }
 
 .status {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
 
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
 
-    color: #526174;
+    color: var(--text-muted);
+}
+
+.status::before {
+    content: "";
+
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+
+    background: currentColor;
+
+    animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+    0%, 100% {
+        opacity: 0.4;
+    }
+    50% {
+        opacity: 1;
+    }
 }
 
 
@@ -252,6 +449,9 @@ main {
    ========================================= */
 
 .loop {
+    position: relative;
+    overflow: hidden;
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -261,25 +461,57 @@ main {
     margin-top: 40px;
     padding: 30px;
 
-    border: 1px solid #e2e7ed;
+    border: 1px solid var(--line);
     border-radius: 10px;
 
     background: #fafbfc;
 }
 
+.loop::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -30%;
+
+    width: 30%;
+    height: 100%;
+
+    background: linear-gradient(90deg, transparent, rgba(111, 216, 201, 0.16), transparent);
+
+    animation: scan-sweep 4.5s linear infinite;
+}
+
+@keyframes scan-sweep {
+    from {
+        left: -30%;
+    }
+    to {
+        left: 100%;
+    }
+}
+
 .loop div {
+    position: relative;
+    z-index: 1;
+
     padding: 10px 14px;
 
-    border: 1px solid #d9dfe7;
+    border: 1px solid var(--line);
     border-radius: 6px;
 
+    font-family: var(--font-mono);
     font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+
+    background: var(--card);
 }
 
 .loop span {
-    color: #7a8798;
+    position: relative;
+    z-index: 1;
+
+    color: var(--accent);
     font-weight: 700;
 }
 
@@ -293,14 +525,15 @@ footer {
 
     text-align: center;
 
-    background: #101827;
+    background: var(--ink);
     color: white;
 }
 
 footer p {
     margin: 5px 0;
 
-    opacity: 0.65;
+    font-family: var(--font-mono);
+    opacity: 0.6;
     font-size: 0.85rem;
 }
 
@@ -367,5 +600,34 @@ footer p {
 
     .hero-text {
         font-size: 1rem;
+    }
+}
+
+
+/* =========================================
+   MOTION PREFERENCES
+   ========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .hero::before,
+    .loop::after,
+    .status::before {
+        animation: none;
+    }
+
+    .eyebrow,
+    .hero h1,
+    .hero h2,
+    .hero-text,
+    .button {
+        animation: none;
+        opacity: 1;
+    }
+
+    .card,
+    .button::before,
+    .nav-links a::after {
+        transition: none;
     }
 }
