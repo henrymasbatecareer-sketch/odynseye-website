@@ -44,6 +44,9 @@ body {
    ========================================= */
 
 .nav {
+    position: relative;
+    z-index: 1;
+
     max-width: 1200px;
     margin: 0 auto;
     padding: 24px 30px;
@@ -126,6 +129,8 @@ body {
 
     background: radial-gradient(circle, var(--accent-dim) 0%, rgba(227, 164, 59, 0) 65%);
     transform: translate(-50%, -50%);
+
+    pointer-events: none;
 
     animation: iris-breathe 7s ease-in-out infinite;
 }
